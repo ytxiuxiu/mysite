@@ -20,7 +20,7 @@ def location(request):
         data = json.loads(request.body)
         if data['_type'] == 'location':
             if 'DYNAMODB_REGION' in os.environ:
-                client = boto3.client('dynamodb', os.environ.DYNAMODB_REGION)
+                client = boto3.client('dynamodb', region_name = os.environ.DYNAMODB_REGION)
             else:
                 client = boto3.client('dynamodb');
             result = client.put_item(
