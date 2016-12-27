@@ -23,25 +23,37 @@ def location(request):
                 client = boto3.client('dynamodb', region_name = os.environ['DYNAMODB_REGION'])
             else:
                 client = boto3.client('dynamodb');
+
+            location = {
+                'user_id': { 'N': str(user.id) },
+                'battery': { 'N': str(data['batt']) },
+                'waypoint': { 'S': str(data['desc']) },
+                'event': { 'S': str(data['event']) },
+                'latitude': { 'N': str(data['lat']) },
+                'longitude': { 'N': str(data['lon']) },
+                'radius': { 'N': str(data['rad']) },
+                'network': { 'S': str(data['conn']) },
+                'visited_at': { 'N': str(data['tst']) },
+                'trigger': { 'S': str(data['t']) },
+                'tracker_id': { 'S': str(data['tid']) },
+            }
+            if 'acc' in data:
+                location['accuracy'] = { 'N': str(data['acc']) }
+            if 'alt' in data:
+                location['alt'] = { 'N': str(data['alt']) }
+            if 'cog' in data:
+                location['heading'] = { 'N': str(data['cog']) }
+            if 'vac' in data:
+                location['altitude_accurancy'] = { 'N': str(data['vac']) }
+            if 'vel' in data:
+                location['velocity'] = { 'N': str(data['vel']) }
+            if 'p' in data:
+                location['barometric_pressure'] = { 'N': str(data['p']) }
+
+
             result = client.put_item(
                 TableName = 'locations',
-                Item = {
-                    'user_id': { 'N': str(user.id) },
-                    'accuracy': { 'N': str(data['acc']) },
-                    'altitude': { 'N': str(data['alt']) },
-                    'battery': { 'N': str(data['batt']) },
-                    'heading': { 'N': str(data['cog']) },
-                    'waypoint': { 'S': str(data['desc']) },
-                    'event': { 'S': str(data['event']) },
-                    'latitude': { 'N': str(data['lat']) },
-                    'longitude': { 'N': str(data['lon']) },
-                    'radius': { 'N': str(data['rad']) },
-                    'altitude_accurancy': { 'N': str(data['acc']) },
-                    'velocity': { 'N': str(data['vel']) },
-                    'barometric_pressure': { 'N': str(data['p']) },
-                    'network': { 'S': str(data['conn']) },
-                    'visited_at': { 'N': str(data['tst']) },
-                }
+                Item = location
             )
             return HttpResponse(str(result))
 
