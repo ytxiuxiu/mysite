@@ -26,6 +26,7 @@ SECRET_KEY = 'rj^8ycqr9&i40hcoz37dyqm3r^@^!&zhd+e7b3zy69*by74m%^'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'localhost',
     'mysite-development.us-west-2.elasticbeanstalk.com'
 ]
 
@@ -33,6 +34,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'index.apps.IndexConfig',
     'travel.apps.TravelConfig',
     'django.contrib.admin',
     'django.contrib.auth',
