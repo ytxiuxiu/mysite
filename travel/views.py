@@ -1,4 +1,4 @@
-import base64, json, boto3, time
+import base64, json, boto3, time, os
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -19,7 +19,10 @@ def location(request):
     if user is not None and user.is_active:
         data = json.loads(request.body)
         if data['_type'] == 'location':
-            client = boto3.client('dynamodb')
+            if 'DYNAMODB_REGION' in os.environ:
+                client = boto3.client('dynamodb', os.environ.DYNAMODB_REGION)
+            else:
+                client = boto3.client('dynamodb');
             result = client.put_item(
                 TableName = 'locations',
                 Item = {
@@ -28,7 +31,7 @@ def location(request):
                     'visited_at': { 'N': str(int(time.time())) },
                 }
             )
-            print result
+            return HttpResponse(str(result))
 
 
     response = HttpResponse()
