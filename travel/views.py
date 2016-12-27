@@ -59,7 +59,11 @@ def location(request):
                 TableName = 'locations',
                 Item = location
             )
-            return HttpResponse(str(result))
+            response = HttpResponse(json.dumps({
+                'result': result
+            }, content_type = 'application/json')
+
+
 
 
     response = HttpResponse()
