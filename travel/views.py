@@ -59,12 +59,9 @@ def location(request):
                 TableName = 'locations',
                 Item = location
             )
-            response = HttpResponse(json.dumps({
+            return HttpResponse(json.dumps({
                 'result': result
-            }, content_type = 'application/json')
-
-
-
+            }), content_type = 'application/json')
 
     response = HttpResponse()
     response.status_code = 401
