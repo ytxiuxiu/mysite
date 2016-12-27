@@ -31,11 +31,9 @@ def location(request):
                 'battery': { 'N': str(data['batt']) },
                 'latitude': { 'N': str(data['lat']) },
                 'longitude': { 'N': str(data['lon']) },
-                'radius': { 'N': str(data['rad']) },
                 'network': { 'S': str(data['conn']) },
-                'visited_at': { 'N': str(data['tst']) },
-                'trigger': { 'S': str(data['t']) },
                 'tracker_id': { 'S': str(data['tid']) },
+                'visited_at': { 'N': str(data['tst']) },
             }
             if 'acc' in data:
                 location['accuracy'] = { 'N': str(data['acc']) }
@@ -47,12 +45,16 @@ def location(request):
                 location['waypoint'] = { 'N': str(data['desc']) }
             if 'event' in data:
                 location['event'] = { 'N': str(data['event']) }
+            if 'rad' in data:
+                location['radius'] = { 'N': str(data['rad']) }
             if 'vac' in data:
                 location['altitude_accurancy'] = { 'N': str(data['vac']) }
             if 'vel' in data:
                 location['velocity'] = { 'N': str(data['vel']) }
             if 'p' in data:
                 location['barometric_pressure'] = { 'N': str(data['p']) }
+            if 't' in data:
+                location['trigger'] = { 'S': str(data['t']) }
 
 
             result = client.put_item(
