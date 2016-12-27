@@ -24,8 +24,6 @@ def location(request):
             else:
                 client = boto3.client('dynamodb');
 
-            print data
-
             location = {
                 'user_id': { 'N': str(user.id) },
                 'battery': { 'N': str(data['batt']) },
