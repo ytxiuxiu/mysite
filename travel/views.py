@@ -28,7 +28,19 @@ def location(request):
                 Item = {
                     'user_id': { 'N': str(user.id) },
                     'accuracy': { 'N': str(data['acc']) },
-                    'visited_at': { 'N': str(int(time.time())) },
+                    'altitude': { 'N': str(data['alt']) },
+                    'battery': { 'N': str(data['batt']) },
+                    'heading': { 'N': str(data['cog']) },
+                    'waypoint': { 'S': str(data['desc']) },
+                    'event': { 'S': str(data['event']) },
+                    'latitude': { 'N': str(data['lat']) },
+                    'longitude': { 'N': str(data['lon']) },
+                    'radius': { 'N': str(data['rad']) },
+                    'altitude_accurancy': { 'N': str(data['acc']) },
+                    'velocity': { 'N': str(data['vel']) },
+                    'barometric_pressure': { 'N': str(data['p']) },
+                    'network': { 'S': str(data['conn']) },
+                    'visited_at': { 'N': str(data['tst']) },
                 }
             )
             return HttpResponse(str(result))
