@@ -29,8 +29,6 @@ def location(request):
             location = {
                 'user_id': { 'N': str(user.id) },
                 'battery': { 'N': str(data['batt']) },
-                'waypoint': { 'S': str(data['desc']) },
-                'event': { 'S': str(data['event']) },
                 'latitude': { 'N': str(data['lat']) },
                 'longitude': { 'N': str(data['lon']) },
                 'radius': { 'N': str(data['rad']) },
@@ -45,6 +43,10 @@ def location(request):
                 location['alt'] = { 'N': str(data['alt']) }
             if 'cog' in data:
                 location['heading'] = { 'N': str(data['cog']) }
+            if 'desc' in data:
+                location['waypoint'] = { 'N': str(data['desc']) }
+            if 'event' in data:
+                location['event'] = { 'N': str(data['event']) }
             if 'vac' in data:
                 location['altitude_accurancy'] = { 'N': str(data['vac']) }
             if 'vel' in data:
