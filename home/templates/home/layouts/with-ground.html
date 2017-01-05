@@ -1,0 +1,12 @@
+{% extends './base.html' %}
+
+{% block building %}
+  <div class="m-floor m-ground-floor col-md-12">
+    {% include '../modules/nav-ground.html' %}
+    {% include '../modules/window.html' %}
+    <img class="timber" src="{{ ground_floor_timber.image.url }}">
+  </div>
+  {% block floors %}
+
+  {% endblock %}
+{% endblock %}

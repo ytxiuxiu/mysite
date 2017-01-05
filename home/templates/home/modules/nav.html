@@ -1,0 +1,26 @@
+<div class="m-nav">
+  <a href="{% url 'home:index' %}" 
+    class="{% if request.path == '/' %}s-active{% endif %}">Home</a>
+  {% for nav_link in nav_links %}
+    <span class="connector"></span>
+    {% if nav_link.type == 'p' %}
+      {% if not nav_link.page.category %}
+        {% with link_url='/'|add:nav_link.page.link|add:'/' %}
+          <a href="{% url 'home:category' category=nav_link.page.link %}" 
+            class="{% if request.path == link_url %}s-active{% endif %}"
+            target="{{ nav_link.target }}">
+            {{ nav_link.link_text }}
+          </a>
+        {% endwith %}
+      {% else %}
+
+      {% endif %}
+    {% elif nav_link.type == 'c' %}
+      <!-- TODO -->
+    {% elif nav_link.type == 'e' %}
+      <a href="{{ nav_link.url }}" target="{{ nav_link.target }}">
+        {{ nav_link.link_text }}
+      </a>
+    {% endif %}
+  {% endfor %}
+</div>

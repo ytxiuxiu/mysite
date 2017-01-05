@@ -1,0 +1,27 @@
+{% load thumbnail %}
+{% load mathfilters %}
+
+<!-- <div class="m-floor m-floor-photo col-md-12">
+{% for photo in photos %}
+  <div class="photo col-md-6">
+    {% if photo.stylish_image %}
+      {% thumbnail photo.stylish_image '998x998' as image %}
+        <img src="{{ image.url }}">
+      {% endthumbnail %}
+    {% else %}
+      {% thumbnail photo.original_image '998x998' as image %}
+        <img src="{{ image.url }}">
+      {% endthumbnail %}
+    {% endif %}
+    <div class="name">
+      {% if photo.name %}
+        - {{ photo.name }} -
+      {% else %}
+        - Unnamed Guy -
+      {% endif %}
+    </div>
+  </div>
+{% endfor %}
+</div>
+-->
+<div id="react"></div>

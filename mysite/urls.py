@@ -18,7 +18,8 @@ from django.contrib import admin
 
 
 urlpatterns = [
-    url(r'^', include('index.urls')),
-    url(r'^travel/', include('travel.urls')),
-    url(r'^admin/', admin.site.urls),
+  url(r'^travel/', include('travel.urls')),
+  url(r'^admin/', admin.site.urls),
+  url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+  url(r'^', include('home.urls')),
 ]

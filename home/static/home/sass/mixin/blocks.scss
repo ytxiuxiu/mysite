@@ -1,0 +1,25 @@
+@import './variables';
+
+@mixin m-window {
+  .m-window {
+    position: absolute;
+    left: -($column-space / 2);
+    width: 100%;
+    text-align: center;
+    margin-top: 96px;
+    z-index: 1;
+
+    h1.big {
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 2px;
+      font-weight: bolder;
+      color: $black;
+    }
+    p.small {
+      width: 399px;
+      margin: 0 auto;
+      font-size: 19px;
+      line-height: 27px;
+    }
+  }
+}

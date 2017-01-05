@@ -1,0 +1,14 @@
+{% extends './layouts/with-ground.html' %}
+
+{% load static from staticfiles %}
+{% load thumbnail %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'home/css/category.css' %}">
+{% endblock %}
+
+{% block grid %}p-category{% endblock %}
+
+{% block floors %}
+  <div data-component="floor-photo" data-prop-url="/{{ category.link }}"></div>
+{% endblock %}

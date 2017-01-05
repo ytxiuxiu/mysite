@@ -1,3 +1,5 @@
+# coding=utf-8
+
 """
 Django settings for mysite project.
 
@@ -26,51 +28,68 @@ SECRET_KEY = 'rj^8ycqr9&i40hcoz37dyqm3r^@^!&zhd+e7b3zy69*by74m%^'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost',
-    'mysite-development.us-west-2.elasticbeanstalk.com'
+  '127.0.0.1',
+  'localhost',
+  'mysite-development.us-west-2.elasticbeanstalk.com'
 ]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'index.apps.IndexConfig',
-    'travel.apps.TravelConfig',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+  'django_gulp',
+
+  'home.apps.HomeConfig',
+  'travel.apps.TravelConfig',
+
+  'django.contrib.admin',
+  'django.contrib.auth',
+  'django.contrib.contenttypes',
+  'django.contrib.sessions',
+  'django.contrib.messages',
+  'django.contrib.staticfiles',
+
+  'storages',
+  'adminsortable',
+  'constance',
+  'constance.backends.database',
+  'sorl.thumbnail',
+  'mathfilters',
+  'ckeditor',
+  'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+  'django.middleware.security.SecurityMiddleware',
+  'django.contrib.sessions.middleware.SessionMiddleware',
+  'django.middleware.common.CommonMiddleware',
+  'django.middleware.csrf.CsrfViewMiddleware',
+  'django.contrib.auth.middleware.AuthenticationMiddleware',
+  'django.contrib.messages.middleware.MessageMiddleware',
+  'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
 
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
+  {
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [],
+    'APP_DIRS': True,
+    'OPTIONS': {
+      'context_processors': [
+        'django.template.context_processors.debug',
+        'django.template.context_processors.request',
+        'django.contrib.auth.context_processors.auth',
+        'django.contrib.messages.context_processors.messages',
+        'constance.context_processors.config',
+        'django.template.context_processors.static',
+      ],
     },
+  },
 ]
+
+
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
@@ -79,44 +98,44 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 if 'RDS_DB_NAME' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
-        }
+  DATABASES = {
+    'default': {
+      'ENGINE': 'django.db.backends.mysql',
+      'NAME': os.environ['RDS_DB_NAME'],
+      'USER': os.environ['RDS_USERNAME'],
+      'PASSWORD': os.environ['RDS_PASSWORD'],
+      'HOST': os.environ['RDS_HOSTNAME'],
+      'PORT': os.environ['RDS_PORT'],
     }
+  }
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'mysite',
-            'HOST': '127.0.0.1',
-            'USER': 'root',
-            'PASSWORD': 'root'
-        }
+  DATABASES = {
+    'default': {
+      'ENGINE': 'django.db.backends.mysql',
+      'NAME': 'mysite',
+      'HOST': '127.0.0.1',
+      'USER': 'root',
+      'PASSWORD': 'root'
     }
+  }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+  {
+    'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+  },
+  {
+    'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+  },
+  {
+    'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+  },
+  {
+    'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+  },
 ]
 
 
@@ -136,6 +155,76 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
+  # AWS
+  AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+  AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+  AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+
+  AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+  STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+  STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
+  # http://developer.yahoo.com/performance/rules.html#expires
+  AWS_HEADERS = {  
+    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+    'Cache-Control': 'max-age=94608000',
+  }
+else:
+  # Local
+  STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+  STATIC_URL = '/static/'
+
+  CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+
+  MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+  MEDIA_URL = '/media/'
+
+
+# For the default file system storage images will be uploaded to "uploads" folder 
+# in your MEDIA_ROOT and urls will be created against MEDIA_URL 
+# (/media/uploads/image.jpg).
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+CKEDITOR_CONFIGS = {
+  'default': {
+    'toolbar': 'full',
+  },
+}
+
+
+# Constance - Dynamic Django Settings
+# http://django-constance.readthedocs.io/en/latest/
 # 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
+CONSTANCE_CONFIG = {
+  'SITE_NAME': ('Unnamed', 'The name of the website'),
+  'TITLE_CONNECTOR': (' - ', 'The connector in the title.'),
+  'TITLE_SUFFIX': ('The official website', 'Title suffix.'),
+  'GROUND_FLOOR_BIG': ('Welcome', 'The big text on the window of the ground floor.'),
+  'GROUND_FLOOR_SMALL': ('Hi, this is my personal website', 'The small text ' 
+    'on the window of the ground floor.'),
+  'COPYRIGHT': ('Copyright © Yingchen Liu 2016. All Rights Reserved', 'Copyright.'),
+  'TOP_FLOOR_INFO': ('', 'Info below copyright.'),
+}
+
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'app': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+        },
+    },
+}
+
+

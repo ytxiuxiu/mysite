@@ -1,0 +1,13 @@
+{% extends './layouts/with-ground.html' %}
+
+{% load static from staticfiles %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'home/css/index.css' %}">
+{% endblock %}
+
+{% block grid %}p-index{% endblock %}
+
+{% block floors %}
+  <div data-component="floor-photo" data-prop-url="/" data-n-prop-height="200"></div>
+{% endblock %}
