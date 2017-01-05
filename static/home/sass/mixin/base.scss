@@ -1,0 +1,73 @@
+@import './variables';
+
+@mixin m-floor {
+  .m-floor {
+    margin-bottom: 14px;
+
+    .timber {
+      overflow: hidden;
+
+      .content {
+        padding: 321px 20px 20px 20px;
+      }
+    }
+  }
+}
+
+@mixin m-nav {
+  .m-nav {
+    font-size: 16px;
+  }
+}
+
+@mixin m-nav-ground {
+  .m-nav-ground {
+    .m-nav {
+      position: absolute;
+      top: 20px;
+      right: 38px;
+      padding: 0 6px 6px 2px;
+      border-bottom: 1px solid $gray;
+      z-index: 2;
+
+      a {
+        margin-right: 5px;
+        text-transform: lowercase;
+      }
+    }
+  }
+}
+
+@mixin m-nav-top {
+  .m-nav-top {
+    .m-nav {
+      margin-bottom: 10px;
+
+      .connector::before {
+        content: '·';
+        margin: 0 3px;
+      }
+    }
+  }
+}
+
+@mixin m-ground-floor {
+  .m-ground-floor {
+    .timber {
+      width: 100%;
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@mixin m-top-floor {
+  .m-top-floor {
+    p {
+      font-size: 12px;
+      margin: 0;
+    }
+  }
+}

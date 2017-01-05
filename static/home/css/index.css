@@ -1,0 +1,13 @@
+.p-index .m-floor-photo .photo {
+  margin-bottom: 14px;
+  position: absolute; }
+  .p-index .m-floor-photo .photo img {
+    width: 100%;
+    opacity: 0.75; }
+  .p-index .m-floor-photo .photo img:hover {
+    transition: 200ms;
+    opacity: 1.0; }
+  .p-index .m-floor-photo .photo .name {
+    color: #5c5c5c;
+    text-align: center;
+    margin-top: 7px; }
