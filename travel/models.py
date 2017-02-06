@@ -9,6 +9,9 @@ from django.utils.encoding import python_2_unicode_compatible
 from .includes.exif import Exif
 
 
+
+
+
 @python_2_unicode_compatible
 class Place(SortableMixin):
   PLAN_TIME = (
@@ -22,12 +25,31 @@ class Place(SortableMixin):
     ('evening', 'Evening'),
   );
 
-  name = models.CharField(max_length = 196, null = True, blank = True)
-  plan_date = models.DateField()
+  
+
+
+  type = models.CharField(max_length = 196)
+  name = models.CharField(max_length = 196)
+  name_en = models.CharField(max_length = 196, null = True, blank = True)
+  search = models.CharField(max_length = 196, null = True, blank = True)
+  icon = models.URLField(null = True, blank = True)
+  address = models.TextField()
+  latitude = models.DecimalField(max_digits = 17, decimal_places = 14)
+  longitude = models.DecimalField(max_digits = 17, decimal_places = 14)
+
+  # travel_type = models.CharField(max_length = 7, choices = TRAVEL_TYPE, null = True, blank = True)
+  # transit_no = models.CharField(max_length = 19, null = True, blank = True)
+  # transit_time = models.TimeField(null = True, blank = True)
+  # transit_arrive_time = models.TimeField(null = True, blank = True)
+  # transit_ticket_price = models.DecimalField(max_digits = 9, decimal_places = 2, null = True, blank = True)
+
+  plan_date = models.DateField(null = True, blank = True)
   plan_time = models.CharField(max_length = 9, choices = PLAN_TIME, null = True, blank = True)
-  visited_at = models.DateTimeField(null = True, blank = True)
+
   added_at = models.DateTimeField()
   sort = models.PositiveIntegerField(default = 0, editable = False, db_index = True)
+
+  
 
   class Meta:
     ordering = ['sort']
@@ -35,6 +57,45 @@ class Place(SortableMixin):
   def __str__(self):
     return self.name + ' @ ' + str(self.plan_date) + ' ' + str(self.plan_time)
   
+
+class TravelConstraint(models.Model):
+  TYPE = (
+    ('departure-before', 'Must departure before'),
+    ('departure-after', 'Must departure after'),
+    ('arrive-before', 'Must arrive before'),
+    ('arrive-after', 'Must arrive after'),
+  );
+
+  type = models.CharField(max_length = 16, choices = TYPE)
+  time = models.TimeField()
+  place = models.ForeignKey(Place)
+
+
+class Transit(models.Model):
+  # TYPE = (
+  #   ('driving', 'Driving'),
+  #   ('walking', 'Walking'),
+  #   ('train', 'Train'),
+  #   ('public', 'Public transport'),
+  #   ('flight', 'Flight'),
+  #   ('ferry', 'Ferry'),
+  # );
+
+  STATUS = (
+    ('decided', 'Decided'),
+    ('yet-decided', 'Yet decided'),
+  )
+
+  # type = models.CharField(max_length = 7, choices = TYPE)
+  status = models.CharField(max_length = 11, choices = STATUS)
+  # no = models.CharField(max_length = 19, null = True, blank = True)
+  # no_en = models.CharField(max_length = 19, null = True, blank = True)
+  # departure_time = models.TimeField(null = True, blank = True)
+  # arrive_time = models.TimeField(null = True, blank = True)
+  ticket_price = models.DecimalField(max_digits = 9, decimal_places = 2, null = True, blank = True)
+  a = models.OneToOneField(Place, related_name = 'from+')
+  b = models.OneToOneField(Place, related_name = 'to+')
+
 
 class Photo(models.Model):
   name = models.CharField(max_length = 196, null = True, blank = True)

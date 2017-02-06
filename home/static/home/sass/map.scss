@@ -1,0 +1,6 @@
+@import './mixin/travel.scss';
+
+.p-map {
+  @include u-map-search-box;
+  @include m-map-place-list;
+}

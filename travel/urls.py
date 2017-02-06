@@ -7,5 +7,6 @@ urlpatterns = [
   # ex: /travel/
   url(r'^$', views.index, name = 'index'),
   # ex: /travel/location/
-  url(r'^location$', views.location, name = 'location')
+  url(r'^location/$', views.location, name = 'location'),
+  url(r'^places/$', views.places, name = 'places')
 ]

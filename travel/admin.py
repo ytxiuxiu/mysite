@@ -3,7 +3,7 @@
 from django.contrib import admin
 from adminsortable.admin import SortableAdmin
 
-from .models import Photo, Place
+from .models import Photo, Place, TravelConstraint
 
 
 class PhotoAdmin(admin.ModelAdmin):
@@ -36,8 +36,14 @@ class PhotoAdmin(admin.ModelAdmin):
   def time(self, obj):
     return obj.image_exif().time();
 
+class TravelConstraintInline(admin.StackedInline):
+    model = TravelConstraint
+    extra = 3
+
 class PlaceAdmin(SortableAdmin):
-  list_display = ('name', 'plan_date', 'plan_time')
+  list_display = ('name', 'name_en', 'search', 'plan_date', 'plan_time', 'type')
+
+  inlines = [TravelConstraintInline]
 
 
 admin.site.register(Photo, PhotoAdmin)

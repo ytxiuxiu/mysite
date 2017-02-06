@@ -56,7 +56,7 @@ INSTALLED_APPS = [
   'sorl.thumbnail',
   'mathfilters',
   'ckeditor',
-  'ckeditor_uploader',
+  'ckeditor_uploader'
 ]
 
 MIDDLEWARE = [

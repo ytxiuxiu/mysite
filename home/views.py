@@ -8,9 +8,6 @@ from .models import GroundFloorTimber, Category, Page, Link
 from travel.models import Photo
 
 
-logger = logging.getLogger('app')
-
-
 def index(request):
   if not request.is_ajax():
     return render(request, 'home/index.html', {

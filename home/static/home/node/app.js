@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import ReactHabitat from 'react-habitat';
 
 import FloorPhoto from './modules/floor-photo.js';
+import TravelMap from './modules/travel-map.js';
 
 
 class App extends ReactHabitat.Bootstrapper {
@@ -12,7 +13,8 @@ class App extends ReactHabitat.Bootstrapper {
     var container = new ReactHabitat.Container();
 
     container.registerAll({
-      'floor-photo': FloorPhoto
+      'floor-photo': FloorPhoto,
+      'travel-map': TravelMap
     });
 
     this.setContainer(container);

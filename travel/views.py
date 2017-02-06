@@ -7,8 +7,35 @@ from django.contrib.auth import authenticate
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
+from home.includes.serializer import ExtJsonSerializer
+from .models import Place
+
 def index(request):
-    return HttpResponse("Hello, world. You're at the travel index.")
+  return render(request, 'travel/index.html')
+
+@csrf_exempt
+def places(request):
+  if request.method == 'GET':
+    places = Place.objects.all()
+    return HttpResponse(ExtJsonSerializer().serialize(places, 
+      fields = ['name', 'icon', 'type', 'address', 
+        'latitude', 'longitude', 'plan_date', 'plan_time']))
+
+  elif request.method == 'POST':
+    data = json.loads(request.body)
+    place = Place(
+      name = data['name'], 
+      search = data['name'],
+      icon = data['icon'],
+      type = data['type'],
+      address = data['address'],
+      latitude = data['latitude'],
+      longitude = data['longitude'],
+      added_at = timezone.now(),
+    )
+    place.save()
+
+    return None
 
 @require_http_methods(['POST'])
 @csrf_exempt

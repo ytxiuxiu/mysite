@@ -1,0 +1,50 @@
+@import './variables';
+
+@mixin u-map-search-box {
+  .u-map-search-box {
+    z-index: 0;
+    position: absolute;
+    left: 114px;
+    top: 10px !important;
+    height: 31px;
+    border-radius: 2px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+    padding-left: 7px;
+    padding-right: 7px;
+    width: 250px;
+    outline: none;
+  }
+}
+
+@mixin m-map-place-list {
+  ul.m-map-place-list {
+    padding-left: 0;
+  
+    li {
+      height: 105px;
+      margin-top: 5px;
+      border-bottom: 1px solid $light-gray;
+      list-style-type: none;
+
+      .name {
+        img.icon {
+          width: 13px;
+          height: 13px;
+          margin-right: 5px;
+        }
+        font-size: 15px;
+        font-weight: normal;
+      }
+      .address {
+        color: $gray;
+      }
+      .photo {
+        width: 79px;
+        height: 99px;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+}

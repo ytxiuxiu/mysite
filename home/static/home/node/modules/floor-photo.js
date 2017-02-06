@@ -1,9 +1,8 @@
 import React from 'react';
-import axios from 'axios';
+import http from './http';
+
 import layoutGeometry from 'justified-layout';
 import Measure from 'react-measure';
-
-axios.defaults.headers = {'X-Requested-With': 'XMLHttpRequest'};
 
 
 const FloorPhoto = React.createClass({
@@ -18,12 +17,12 @@ const FloorPhoto = React.createClass({
     };
   },
   componentDidMount() {
-    axios.get(this.props.url)
+    http.get(this.props.url)
       .then(res => {
-        const photos = res.data;
-        this.state.photos = photos;
-        this.state.load = 'loaded';
-        this.setState(this.state);
+        this.setState({
+          photos: res.data,
+          load: 'loaded'
+        });
       });
   },
   render() {
@@ -79,7 +78,10 @@ const FloorPhoto = React.createClass({
             this.state.dimensions = dimensions;
             this.setState(this.state);
           }}>
-          <div className="m-floor m-floor-photo col-md-12" style={{height: container.height + 'px'}}>
+          <div 
+            className="m-floor m-floor-photo col-md-12" 
+            style={{height: container.height + 'px'}}
+            >
             {photos.map(photo =>
               <div className="photo" 
                 key={photo.pk}
