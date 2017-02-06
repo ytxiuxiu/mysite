@@ -1,0 +1,12 @@
+# deployment
+
+```
+git commit ...
+eb deploy
+```
+
+# ssh
+
+```
+eb ssh
+```
