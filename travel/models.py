@@ -9,8 +9,17 @@ from django.utils.encoding import python_2_unicode_compatible
 from .includes.exif import Exif
 
 
-
-
+class WorldPlace(models.Model):
+  TYPE = (
+    ('been', 'Been'),
+    ('plan', 'Plan'),
+    ('home', 'Home'),
+  );
+  name = models.CharField(max_length = 196)
+  type = models.CharField(max_length = 4, choices = TYPE)
+  latitude = models.DecimalField(max_digits = 17, decimal_places = 14)
+  longitude = models.DecimalField(max_digits = 17, decimal_places = 14)
+  
 
 @python_2_unicode_compatible
 class Place(SortableMixin):
@@ -24,9 +33,6 @@ class Place(SortableMixin):
     ('dust', 'Dust'),
     ('evening', 'Evening'),
   );
-
-  
-
 
   type = models.CharField(max_length = 196)
   name = models.CharField(max_length = 196)

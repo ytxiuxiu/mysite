@@ -1,0 +1,135 @@
+{% load static from staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>芋头丢丢环游世界</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoieXR4aXV4aXUiLCJhIjoiY2l4NnByYTZkMDEyOTJ5bXN2OGNyMzU0YSJ9.2XjIDOvVVsT4-WWcdNuBIA';
+
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/ytxiuxiu/ciys3jbq900042srzlwe64m4r', //stylesheet location
+    center: [116.1165966, 39.938545], // starting position
+    zoom: 2 // starting zoom
+});
+
+var places = [
+{% for place in places %}
+    {
+        name: '{{ place.name }}',
+        coordinates: [{{ place.latitude }}, {{ place.longitude }}],
+        type: '{{ place.type }}'
+    },
+{% endfor %}
+];
+
+var been = {
+    type: 'FeatureCollection',
+    features: []
+};
+var plan = {
+    type: 'FeatureCollection',
+    features: []
+};
+var home = {
+    type: 'FeatureCollection',
+    features: []
+};
+
+var icons = {
+    been: '{% static "travel/images/been.png" %}',
+    home: '{% static "travel/images/home.png" %}',
+    plan: '{% static "travel/images/plan.png" %}'
+};
+
+for (var i = 0; i < places.length; i++) {
+    var place = places[i];
+    var feature = {
+        type: 'Feature',
+        geometry: {
+            type: 'Point',
+            coordinates: [place.coordinates[1], place.coordinates[0]]
+        },
+        properties: {
+            name: place.name,
+            icon: place.type,
+            color: place.type == 'been' ? 
+                'rgba(0, 0, 0, 1)' : 
+                'rgba(150, 150, 150, 1)'
+        }
+    };
+
+    if (place.type == 'been') {
+        been.features.push(feature);
+    } else if (place.type == 'plan') {
+        plan.features.push(feature);
+    } else if (place.type == 'home') {
+        home.features.push(feature);
+    }
+}
+
+function addText(id, features, color) {
+    map.addLayer({
+        id: id,
+        type: 'symbol',
+        source: {
+            type: 'geojson',
+            data: features,
+        },
+        layout: {
+            'text-field': '{name}',
+            'text-size': 16,
+            'text-offset': [0, 0.3],
+            'text-anchor': 'top'
+        },
+        paint: {
+            'text-color': color
+        }
+    });
+}
+function addIcon(features) {
+    for (var i = 0; i < features.features.length; i++) {
+        var marker = features.features[i];
+        var el = document.createElement('div');
+        el.className = 'marker';
+        el.style.backgroundImage = 'url(' + icons[marker.properties.icon] + ')';
+        el.style.width = '8px';
+        el.style.height = '8px';
+
+        el.addEventListener('click', function() {
+            // window.alert(marker.properties.message);
+        });
+
+        // add marker to map
+        new mapboxgl.Marker(el, {offset: [-4, -4]}) 
+            .setLngLat(marker.geometry.coordinates)
+            .addTo(map);
+    }
+}
+
+map.on('load', function () {
+    addText('been', been, 'rgba(0, 0, 0, 1)');
+    addText('plan', plan, 'rgba(100, 100, 100, 1)');
+    addText('home', home, 'rgba(0, 0, 0, 1)');
+
+    addIcon(been);
+    addIcon(plan);
+    addIcon(home);
+});
+</script>
+
+</body>
+</html>

@@ -3,8 +3,11 @@
 from django.contrib import admin
 from adminsortable.admin import SortableAdmin
 
-from .models import Photo, Place, TravelConstraint
+from .models import Photo, Place, TravelConstraint, WorldPlace
 
+
+class WorldPlaceAdmin(admin.ModelAdmin):
+  list_display = ('name', 'type')
 
 class PhotoAdmin(admin.ModelAdmin):
   list_display = ('admin_thumbnail', 'name', 'user', 'added_at', 
@@ -48,3 +51,4 @@ class PlaceAdmin(SortableAdmin):
 
 admin.site.register(Photo, PhotoAdmin)
 admin.site.register(Place, PlaceAdmin)
+admin.site.register(WorldPlace, WorldPlaceAdmin)

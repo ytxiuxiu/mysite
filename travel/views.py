@@ -8,7 +8,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
 from home.includes.serializer import ExtJsonSerializer
-from .models import Place
+from .models import Place, WorldPlace
 
 def index(request):
   return render(request, 'travel/index.html')
@@ -36,6 +36,12 @@ def places(request):
     place.save()
 
     return None
+
+@require_http_methods(['GET'])
+def world(request):
+  return render(request, 'travel/world.html', {
+    'places': WorldPlace.objects.all()
+  })
 
 @require_http_methods(['POST'])
 @csrf_exempt
