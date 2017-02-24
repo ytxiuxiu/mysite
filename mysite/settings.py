@@ -170,6 +170,9 @@ if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
     'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
     'Cache-Control': 'max-age=94608000',
   }
+
+  MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+  DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 else:
   # Local
   STATIC_ROOT = os.path.join(BASE_DIR, 'static')
