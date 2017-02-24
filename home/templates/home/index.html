@@ -4,24 +4,12 @@
 
 {% block styles %}
   <link rel="stylesheet" href="{% static 'home/css/index.css' %}">
-  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
-  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
 {% endblock %}
 
 {% block grid %}p-index{% endblock %}
 
 {% block floors %}
   <div data-component="floor-photo" data-prop-url="{% url 'home:index' %}" data-n-prop-height="200"></div>
-  <div id='map'></div>
-  <script>
-  mapboxgl.accessToken = 'pk.eyJ1IjoieXR4aXV4aXUiLCJhIjoiY2l4NnByYTZkMDEyOTJ5bXN2OGNyMzU0YSJ9.2XjIDOvVVsT4-WWcdNuBIA';
-  var map = new mapboxgl.Map({
-      container: 'map', // container id
-      style: 'mapbox://styles/ytxiuxiu/ciys3jbq900042srzlwe64m4r', //stylesheet location
-      center: [-74.50, 40], // starting position
-      zoom: 9 // starting zoom
-  });
-  </script>
 {% endblock %}
 
 
