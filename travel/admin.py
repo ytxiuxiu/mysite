@@ -11,7 +11,7 @@ class WorldPlaceAdmin(admin.ModelAdmin):
 
 class PhotoAdmin(admin.ModelAdmin):
   list_display = ('admin_thumbnail', 'name', 'user', 'added_at', 
-    'device', 'lens', 'coordinate', 'size', 'parameters', 'time')
+    'size', 'parameters', 'time') // 'device', 'lens', 'coordinate', 
   search_fields = ['name', 'description']
 
   def device(self, obj):
