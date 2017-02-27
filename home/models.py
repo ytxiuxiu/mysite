@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from sorl.thumbnail import get_thumbnail
 from ckeditor_uploader.fields import RichTextUploadingField
+from adminsortable.models import SortableMixin
 from django.utils.encoding import python_2_unicode_compatible
 
 from django.contrib.auth.models import User
@@ -78,7 +79,7 @@ class Page(models.Model):
     return self.name
 
 @python_2_unicode_compatible
-class Link(models.Model):
+class Link(SortableMixin):
   TARGET = (
     ('_blank', 'New window/tab'),
     ('_self', 'Current window'),
@@ -96,6 +97,10 @@ class Link(models.Model):
   url = models.CharField(max_length = 255, null = True, blank = True)
   category = models.ForeignKey(Category, related_name = 'link_category', null = True, blank = True)
   page = models.ForeignKey(Page, related_name = 'link_category', null = True, blank = True)
+  sort = models.PositiveIntegerField(default = 0, editable = False, db_index = True)
+
+  class Meta:
+    ordering = ['sort']
 
   def __str__(self):
     return self.name

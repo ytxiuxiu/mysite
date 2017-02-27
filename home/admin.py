@@ -1,4 +1,5 @@
 from django.contrib import admin
+from adminsortable.admin import SortableAdmin
 
 from .models import GroundFloorTimber, Category, Page, Link
 
@@ -15,7 +16,7 @@ class PageAdmin(admin.ModelAdmin):
   list_display = ('name', 'user', 'modified_at')
   search_fields = ['name', 'content']
 
-class LinkAdmin(admin.ModelAdmin):
+class LinkAdmin(SortableAdmin):
   list_display = ('name', 'link_text', 'type', 'link_to')
   search_fields = ['name', 'link_text']
 
