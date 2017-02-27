@@ -86,6 +86,7 @@ const FloorPhoto = React.createClass({
             >
             {photos.map(photo =>
               <a href={photo.link}
+                target="_blank"
                 key={'p-' + photo.pk}>
                 <div className="photo" 
                   style={photo.style}>
