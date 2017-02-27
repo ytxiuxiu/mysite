@@ -14,11 +14,13 @@
     {% include './modules/nav-ground.html' %}
     {% include './modules/window.html' %}
     <div class="timber">
-      {% with width=page.content_width offset=12|sub:page.content_width|intdiv:2 sm_width=page.content_width|add:2 %}
-        <div class="content t-text col-md-{{ width }} col-md-offset-{{ offset }} col-sm-{{ sm_width }} col-sm-offset-{{ offset|sub:1 }}">
-          {{ page.content|safe }}
-        </div>
-      {% endwith %}
+      {% for section in page_sections %}
+        {% with width=section.content_width offset=section.content_offset %}
+          <div class="content t-text col-md-{{ width }} col-md-offset-{{ offset }} col-sm-{{ width }} col-sm-offset-{{ offset }}">
+            {{ section.content|safe }}
+          </div>
+        {% endwith %}
+      {% endfor %}
     </div>
   </div>
 {% endblock %}

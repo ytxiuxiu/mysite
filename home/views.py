@@ -4,12 +4,11 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, JsonResponse
 
 from .includes.serializer import ExtJsonSerializer
-from .models import GroundFloorTimber, Category, Page, Link
-from .serializers import PageSerializer
+from .models import GroundFloorTimber, Category, Page, PageSection, Link
 from travel.models import Photo
 
 
-def index(request):
+def get_index(request):
   if not request.is_ajax():
     return render(request, 'home/index.html', {
       'ground_floor_timber': GroundFloorTimber.objects.order_by('?').first(),
@@ -20,45 +19,40 @@ def index(request):
     return HttpResponse(ExtJsonSerializer().serialize(photos, 
       fields = ['name', 'image_thumbnail', 'image_size']))
 
-def page(request, category, page):
+def get_page(request, page):
   page = get_object_or_404(Page, link = page)
+  page_sections = PageSection.objects.filter(page = page)
   return render(request, 'home/page.html', {
     'page': page,
+    'page_sections': page_sections,
     'nav_links': Link.objects.all(),
   })
 
-def category(request, category, page = None):
+def get_category(request, category, page = None):
   # categories / top-level pages
   if page is None:
     try:
       category = Category.objects.get(link = category)
-    except (KeyError, Category.DoesNotExist):
-      page = get_object_or_404(Page, link = category)
-      return render(request, 'home/page.html', {
-        'page': page,
-        'nav_links': Link.objects.all(),
-      })
 
-    if not request.is_ajax():
-      # category page
-      return render(request, 'home/category.html', {
-        'ground_floor_timber': GroundFloorTimber.objects.order_by('?').first(),
-        'nav_links': Link.objects.all(),
-        'category': category,
-      })
-    else:
-      # ajax pages in category
-      pages = Page.objects.filter(category = category)
-      return HttpResponse(ExtJsonSerializer().serialize(pages, 
-        fields = ['name', 'link', 'category.link', 'image_thumbnail', 'image_size']))
+      if not request.is_ajax():
+        # category page
+        return render(request, 'home/category.html', {
+          'ground_floor_timber': GroundFloorTimber.objects.order_by('?').first(),
+          'nav_links': Link.objects.all(),
+          'category': category,
+        })
+      else:
+        # ajax pages in category
+        pages = Page.objects.filter(category = category)
+        return HttpResponse(ExtJsonSerializer().serialize(pages, 
+          fields = ['name', 'link', 'category.link', 'image_thumbnail', 'image_size']))
+
+    except (KeyError, Category.DoesNotExist):
+      return get_page(request, category)
 
   # pages
   else:
-    page = get_object_or_404(Page, link = page)
-    return render(request, 'home/page.html', {
-      'page': page,
-      'nav_links': Link.objects.all(),
-    })
+    return get_page(request, page)
   
   
 

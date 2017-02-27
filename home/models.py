@@ -41,20 +41,9 @@ class Category(models.Model):
 
 @python_2_unicode_compatible
 class Page(models.Model):
-  CONTENT_WIDTH = (
-    ('2', '2'),
-    ('4', '4'),
-    ('6', '6'),
-    ('8', '8'),
-    ('10', '10'),
-    ('12', '12'),
-  )
-
   name = models.CharField(max_length = 192)
   link = models.CharField(max_length = 192)
   cover_image = models.ImageField(upload_to = 'page-cover', null = True, blank = True)
-  content = RichTextUploadingField()
-  content_width = models.CharField(max_length = 2, choices = CONTENT_WIDTH, default = 12)
   user = models.ForeignKey(User)
   category = models.ForeignKey(Category, null = True, blank = True)
   created_at = models.DateTimeField()
@@ -77,6 +66,42 @@ class Page(models.Model):
 
   def __str__(self):
     return self.name
+
+class PageSection(models.Model):
+  CONTENT_WIDTH = (
+    ('1', '1'),
+    ('2', '2'),
+    ('3', '3'),
+    ('4', '4'),
+    ('5', '5'),
+    ('6', '6'),
+    ('7', '7'),
+    ('8', '8'),
+    ('9', '9'),
+    ('10', '10'),
+    ('11', '11'),
+    ('12', '12'),
+  )
+
+  CONTENT_OFFSET = (
+    ('0', '0'),
+    ('1', '1'),
+    ('2', '2'),
+    ('3', '3'),
+    ('4', '4'),
+    ('5', '5'),
+    ('6', '6'),
+    ('7', '7'),
+    ('8', '8'),
+    ('9', '9'),
+    ('10', '10'),
+    ('11', '11'),
+  )
+
+  content = RichTextUploadingField()
+  content_width = models.CharField(max_length = 2, choices = CONTENT_WIDTH, default = 12)
+  content_offset = models.CharField(max_length = 2, choices = CONTENT_OFFSET, default = 0)
+  page = models.ForeignKey(Page)
 
 @python_2_unicode_compatible
 class Link(SortableMixin):
