@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse
 
 from .includes.serializer import ExtJsonSerializer
 from .models import GroundFloorTimber, Category, Page, Link
+from .serializers import PageSerializer
 from travel.models import Photo
 
 
@@ -37,15 +38,17 @@ def category(request, category):
     })
   
   if not request.is_ajax():
+    # category page
     return render(request, 'home/category.html', {
       'ground_floor_timber': GroundFloorTimber.objects.order_by('?').first(),
       'nav_links': Link.objects.all(),
       'category': category,
     })
   else:
+    # ajax pages in category
     pages = Page.objects.filter(category = category)
     return HttpResponse(ExtJsonSerializer().serialize(pages, 
-      fields = ['name', 'image_thumbnail', 'image_size']))
+      fields = ['name', 'link', 'category.link', 'image_thumbnail', 'image_size']))
 
 
 

@@ -7,14 +7,23 @@ class ExtBaseSerializer(BaseSerializer):
   def serialize_property(self, obj):
     model = type(obj)
     for field in self.selected_fields:
-      if hasattr(model, field):
-        if type(getattr(model, field)) == property:
-          self.handle_prop(obj, field)
-      else:
-        raise KeyError('Field `' + field + '` doesn\'t exists in the model `' + str(model) + '`')
+      path = field.split('.')
+      self.handle_prop(obj, path, field)
 
-  def handle_prop(self, obj, field):
-    self._current[field] = getattr(obj, field)
+  def handle_prop(self, obj, path, field):
+    model = type(obj)
+    #print 'model', model, 'path', path, 'feild', field
+    #print 'hasattr(model, path[0])', hasattr(model, path[0]), 'type(getattr(model, path[0]))', type(getattr(model, path[0]))
+    if hasattr(model, path[0]):
+      self._current[field] = getattr(obj, path[0])
+      #print 'self._current[field]', self._current[field]
+    else:
+      raise KeyError('Field `' + path[0] + '` doesn\'t exists in the model `' + str(model) + '`')
+
+    if len(path) > 1:
+      del path[0]
+      #print 'path', path
+      self.handle_prop(self._current[field], path, field)
 
   def end_object(self, obj):
     self.serialize_property(obj)

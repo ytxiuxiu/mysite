@@ -41,6 +41,10 @@ const FloorPhoto = React.createClass({
         width: photo.fields.image_size[0],
         height: photo.fields.image_size[1]
       });
+
+      if (photo.model === 'home.page') {
+        photo.link = '/' + photo.fields['category.link'] + '/' + photo.fields.link + '/';
+      }
     });
 
     const layout = layoutGeometry(sizes, {
@@ -55,13 +59,11 @@ const FloorPhoto = React.createClass({
     for (var i = 0, l = layout.boxes.length; i < l; i++) {
       var box = layout.boxes[i];
       var level = box.top > lastTop ? level + 1 : level;
-      console.log(level, box.top, box.top + level * NAME_HEIGHT);
       photos[i].style = {
         transform: 'translate(' + box.left + 'px, ' + (box.top + level * NAME_HEIGHT) + 'px)',
         width: box.width + 'px', 
         height: (box.height + NAME_HEIGHT) + 'px'
       };
-      console.log(photos[i].style);
       lastTop = box.top;
     }
     container.height = layout.containerHeight + (level + 1) * NAME_HEIGHT;
@@ -83,19 +85,21 @@ const FloorPhoto = React.createClass({
             style={{height: container.height + 'px'}}
             >
             {photos.map(photo =>
-              <div className="photo" 
-                key={photo.pk}
-                style={photo.style}>
-                <img src={photo.fields.image_thumbnail}/>
-                <div className="name">
-                  {photo.fields.name &&
-                    <span>- {photo.fields.name} -</span>
-                  }
-                  {!photo.fields.name &&
-                    <span>- Unnamed Guy -</span>
-                  }
+              <a href={photo.link}
+                key={'p-' + photo.pk}>
+                <div className="photo" 
+                  style={photo.style}>
+                  <img src={photo.fields.image_thumbnail}/>
+                  <div className="name">
+                    {photo.fields.name &&
+                      <span>- {photo.fields.name} -</span>
+                    }
+                    {!photo.fields.name &&
+                      <span>- Unnamed Guy -</span>
+                    }
+                  </div>
                 </div>
-              </div>
+              </a>
             )}
           </div>
         </Measure>
