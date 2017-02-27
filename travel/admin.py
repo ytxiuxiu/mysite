@@ -11,14 +11,14 @@ class WorldPlaceAdmin(admin.ModelAdmin):
 
 class PhotoAdmin(admin.ModelAdmin):
   list_display = ('admin_thumbnail', 'name', 'user', 'added_at', 
-    'size', 'parameters', 'time') # 'device', 'lens', 'coordinate', 
+    'size') # 'device', 'lens', 'coordinate', 'parameters', 'time'
   search_fields = ['name', 'description']
 
-  def device(self, obj):
-    return obj.image_exif().device()
+  # def device(self, obj):
+  #   return obj.image_exif().device()
 
-  def coordinate(self, obj):
-    return obj.image_exif().coordinate()
+  # def coordinate(self, obj):
+  #   return obj.image_exif().coordinate()
 
   def size(self, obj):
     if obj.stylish_image_size():
@@ -27,17 +27,17 @@ class PhotoAdmin(admin.ModelAdmin):
         size = obj.original_image_size()
     return '{0} × {1}'.format(size[0], size[1])
 
-  def lens(self, obj):
-    return obj.image_exif().lens()
+  # def lens(self, obj):
+  #   return obj.image_exif().lens()
 
-  def parameters(self, obj):
-    exif = obj.image_exif()
-    return 'f/{0} 1/{1} {2}mm ISO{3}'.format(
-        exif.aperture(), exif.exposure(), exif.focal_length(), exif.iso()
-    )
+  # def parameters(self, obj):
+  #   exif = obj.image_exif()
+  #   return 'f/{0} 1/{1} {2}mm ISO{3}'.format(
+  #       exif.aperture(), exif.exposure(), exif.focal_length(), exif.iso()
+  #   )
 
-  def time(self, obj):
-    return obj.image_exif().time();
+  # def time(self, obj):
+  #   return obj.image_exif().time();
 
 class TravelConstraintInline(admin.StackedInline):
     model = TravelConstraint
