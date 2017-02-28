@@ -30,7 +30,10 @@ DEBUG = True
 ALLOWED_HOSTS = [
   '127.0.0.1',
   'localhost',
-  'mysite-development.us-west-2.elasticbeanstalk.com'
+  'mysite-development.us-west-2.elasticbeanstalk.com',
+  'yingchenliu.com',
+  'dev.yingchenliu.com',
+  'www.yingchenliu.com'
 ]
 
 
