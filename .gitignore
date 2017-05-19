@@ -1,5 +1,6 @@
 node_modules
 bower_components
+media/cache
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
