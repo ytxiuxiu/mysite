@@ -8567,6 +8567,8 @@ body.building {
     width: 100%; }
     body.building .m-ground-floor .timber img {
       width: 100%; }
-  body.building .m-top-floor p {
-    font-size: 12px;
-    margin: 0; }
+  body.building .m-top-floor {
+    margin-top: 25px; }
+    body.building .m-top-floor p {
+      font-size: 12px;
+      margin: 0; }

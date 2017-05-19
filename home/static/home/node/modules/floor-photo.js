@@ -9,10 +9,15 @@ const FloorPhoto = React.createClass({
   getInitialState() {
     return {
       load: 'loading',
+      photo: null,
       photos: [],
       dimensions: {
         width: 0,
         height: 0
+      },
+      bigPhoto: {
+        src: null,
+        clazz: 'hide'
       }
     };
   },
@@ -68,6 +73,10 @@ const FloorPhoto = React.createClass({
     }
     container.height = layout.containerHeight + (level + 1) * NAME_HEIGHT;
 
+    var photoClicked = function() {
+
+    };
+
     if (this.state.load === 'loading') {
       return (
         <div className="m-floor m-floor-photo col-md-12">
@@ -85,8 +94,8 @@ const FloorPhoto = React.createClass({
             style={{height: container.height + 'px'}}
             >
             {photos.map(photo =>
-              <a href={photo.link}
-                target="_blank"
+              <a href="#"
+                onClick={photoClicked}
                 key={'p-' + photo.pk}>
                 <div className="photo" 
                   style={photo.style}>
@@ -104,6 +113,7 @@ const FloorPhoto = React.createClass({
             )}
           </div>
         </Measure>
+        
       )
     }
   }

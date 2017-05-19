@@ -1,11 +1,20 @@
-# deployment
+# Development
+
+```
+source ~/virt-mysite/bin/active
+python manager.py runserver
+```
+
+visit `http://127.0.0.1:8000/`
+
+# Deployment
 
 ```
 git commit ...
 eb deploy
 ```
 
-# ssh
+# SSH
 
 ```
 eb ssh

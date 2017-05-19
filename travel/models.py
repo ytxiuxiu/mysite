@@ -124,7 +124,7 @@ class Photo(models.Model):
 
 
   def admin_thumbnail(self):
-    thumbnail_url = self.thumbnail_url(125, 125)
+    thumbnail_url = self.thumbnail_url(125)
     return '<image src="{0}">'.format(thumbnail_url)
 
   admin_thumbnail.short_description = 'Thumb'
@@ -138,14 +138,21 @@ class Photo(models.Model):
     if self.stylish_image:
       return self.stylish_image.width, self.stylish_image.height
 
-  def thumbnail_url(self, width = 800, height = 800):
-    size = '{0}x{1}'.format(width, height)
+  def thumbnail_url(self, maxSize = 800):
     if self.stylish_image:
-      thumbnail = get_thumbnail(self.stylish_image, size)
-      return thumbnail.url
+      image = self.stylish_image
+      size = self.stylish_image_size()
     elif self.original_image:
-      thumbnail = get_thumbnail(self.original_image, size)
-      return thumbnail.url
+      image = self.original_image
+      size = self.original_image_size()
+
+    if (size[0] >= size[1]):
+      size = '{0}x{1}'.format(maxSize, maxSize * size[1] / size[0])
+    else:
+      size = '{0}x{1}'.format(maxSize * size[0] / size[1], maxSize)
+
+    thumbnail = get_thumbnail(image, size, quality=99)
+    return thumbnail.url
 
   def image_exif(self):
     return Exif(self.original_image)
