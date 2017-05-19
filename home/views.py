@@ -17,7 +17,7 @@ def get_index(request):
 def get_index_photos(request):
   photos = Photo.objects.order_by('-added_at')[:10]
   return HttpResponse(ExtJsonSerializer().serialize(photos, 
-    fields = ['name', 'image_thumbnail', 'image_size']))
+    fields = ['name', 'image_thumbnail', 'image_size', 'original_image_url', 'stylish_image_url']))
 
 def get_page(request, page):
   page = get_object_or_404(Page, link = page)

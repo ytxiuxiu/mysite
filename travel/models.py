@@ -122,6 +122,15 @@ class Photo(models.Model):
     else:
       return self.original_image_size()
 
+  @property
+  def original_image_url(self):
+    return self.original_image.url
+
+  @property
+  def stylish_image_url(self):
+    if self.stylish_image:
+      return self.stylish_image.url
+
 
   def admin_thumbnail(self):
     thumbnail_url = self.thumbnail_url(125)

@@ -4,21 +4,56 @@ import http from './http';
 import layoutGeometry from 'justified-layout';
 import Measure from 'react-measure';
 
+// left: 37, up: 38, right: 39, down: 40,
+// spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
+var keys = {37: 1, 38: 1, 39: 1, 40: 1};
+
+function preventDefault(e) {
+  e = e || window.event;
+  if (e.preventDefault)
+      e.preventDefault();
+  e.returnValue = false;  
+}
+
+function preventDefaultForScrollKeys(e) {
+    if (keys[e.keyCode]) {
+        preventDefault(e);
+        return false;
+    }
+}
+
+function disableScroll() {
+  if (window.addEventListener) // older FF
+      window.addEventListener('DOMMouseScroll', preventDefault, false);
+  window.onwheel = preventDefault; // modern standard
+  window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
+  window.ontouchmove  = preventDefault; // mobile
+  document.onkeydown  = preventDefaultForScrollKeys;
+}
+
+function enableScroll() {
+    if (window.removeEventListener)
+        window.removeEventListener('DOMMouseScroll', preventDefault, false);
+    window.onmousewheel = document.onmousewheel = null; 
+    window.onwheel = null; 
+    window.ontouchmove = null;  
+    document.onkeydown = null;  
+}
+
 
 const FloorPhoto = React.createClass({
   getInitialState() {
     return {
       load: 'loading',
-      photo: null,
+      photo: {
+        state: 'hide',
+        src: null
+      },
       photos: [],
       dimensions: {
         width: 0,
         height: 0
       },
-      bigPhoto: {
-        src: null,
-        clazz: 'hide'
-      }
     };
   },
   componentDidMount() {
@@ -30,6 +65,25 @@ const FloorPhoto = React.createClass({
         });
       });
   },
+  photoClicked(clickedPhoto) {
+    this.setState({
+      photo: {
+        state: 'show',
+        src: clickedPhoto.fields.stylish_image_url ? 
+            clickedPhoto.fields.stylish_image_url : 
+            clickedPhoto.fields.original_image_url
+      }
+    });
+    disableScroll();
+  },
+  photoCloseClicked() {
+    this.setState({
+      photo: {
+        state: 'hide'
+      }
+    });
+    enableScroll();
+  },
   render() {
     const SPACING = 14;
     const NAME_HEIGHT = 30;
@@ -40,6 +94,7 @@ const FloorPhoto = React.createClass({
     }
 
     const sizes = [];
+    const photo = this.state.photo;
     const photos = this.state.photos;
     photos.map(photo => {
       sizes.push({
@@ -73,10 +128,6 @@ const FloorPhoto = React.createClass({
     }
     container.height = layout.containerHeight + (level + 1) * NAME_HEIGHT;
 
-    var photoClicked = function() {
-
-    };
-
     if (this.state.load === 'loading') {
       return (
         <div className="m-floor m-floor-photo col-md-12">
@@ -85,17 +136,17 @@ const FloorPhoto = React.createClass({
       );
     } else if (this.state.load === 'loaded') {
       return (
+        <div>
         <Measure onMeasure={(dimensions) => {
             this.state.dimensions = dimensions;
             this.setState(this.state);
           }}>
           <div 
             className="m-floor m-floor-photo col-md-12" 
-            style={{height: container.height + 'px'}}
+            style={{height: container.height + 'px', cursor: 'pointer'}}
             >
             {photos.map(photo =>
-              <a href="#"
-                onClick={photoClicked}
+              <a onClick={() => this.photoClicked(photo)}
                 key={'p-' + photo.pk}>
                 <div className="photo" 
                   style={photo.style}>
@@ -113,7 +164,18 @@ const FloorPhoto = React.createClass({
             )}
           </div>
         </Measure>
-        
+        { photo.state == 'show' ? 
+          <div
+            style={{cursor: 'pointer'}}
+            onClick={this.photoCloseClicked} 
+            className="m-view-photo-container"
+            >
+            <img src={photo.src}/>
+          </div>
+          :
+          <div></div>
+        }
+        </div>
       )
     }
   }
