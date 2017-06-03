@@ -33,7 +33,9 @@ ALLOWED_HOSTS = [
   'mysite-development.us-west-2.elasticbeanstalk.com',
   'yingchenliu.com',
   'dev.yingchenliu.com',
-  'www.yingchenliu.com'
+  'www.yingchenliu.com',
+  'yutou.in',
+  'www.yutou.in'
 ]
 
 
