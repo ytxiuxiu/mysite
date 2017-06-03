@@ -66,15 +66,19 @@ const FloorPhoto = React.createClass({
       });
   },
   photoClicked(clickedPhoto) {
-    this.setState({
-      photo: {
-        state: 'show',
-        src: clickedPhoto.fields.stylish_image_url ? 
-            clickedPhoto.fields.stylish_image_url : 
-            clickedPhoto.fields.original_image_url
-      }
-    });
-    disableScroll();
+    if (clickedPhoto.link) {
+      window.location.href = clickedPhoto.link;
+    } else {
+      this.setState({
+        photo: {
+          state: 'show',
+          src: clickedPhoto.fields.stylish_image_url ? 
+              clickedPhoto.fields.stylish_image_url : 
+              clickedPhoto.fields.original_image_url
+        }
+      });
+      disableScroll();
+    }
   },
   photoCloseClicked() {
     this.setState({
